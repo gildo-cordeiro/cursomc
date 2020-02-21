@@ -1,7 +1,5 @@
 package com.gildocordeiro.cursomc.resources;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +18,8 @@ public class CategoriaResource {
 	private CategoriaService servico;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id, HttpServletRequest request){
-		Categoria categoria = servico.buscar(id);
-		request.setAttribute("id", id);
+	public ResponseEntity<?> find(@PathVariable Integer id){
+		Categoria categoria = servico.buscar(id);	
 		return ResponseEntity.ok().body(categoria);
 	}	
 }
