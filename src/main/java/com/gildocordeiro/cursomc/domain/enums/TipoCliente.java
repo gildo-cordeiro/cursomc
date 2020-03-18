@@ -1,7 +1,5 @@
 package com.gildocordeiro.cursomc.domain.enums;
 
-import java.util.Iterator;
-
 public enum TipoCliente {
 	
 	PESSOAFISICA(1,"Pessoa Física"),

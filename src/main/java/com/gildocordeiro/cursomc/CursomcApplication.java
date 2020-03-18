@@ -15,8 +15,11 @@ import com.gildocordeiro.cursomc.domain.Estado;
 import com.gildocordeiro.cursomc.domain.Produto;
 import com.gildocordeiro.cursomc.domain.enums.TipoCliente;
 import com.gildocordeiro.cursomc.repositories.CategoriaRepository;
+import com.gildocordeiro.cursomc.repositories.CidadeRepositoy;
+import com.gildocordeiro.cursomc.repositories.ClienteRepository;
+import com.gildocordeiro.cursomc.repositories.EnderecoRepository;
+import com.gildocordeiro.cursomc.repositories.EstadoRepository;
 import com.gildocordeiro.cursomc.repositories.ProdutoRepository;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner{
@@ -26,7 +29,19 @@ public class CursomcApplication implements CommandLineRunner{
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private CidadeRepositoy cidadeRepository;
+	
+	@Autowired
+	private EstadoRepository estadoRepository;
 
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -61,14 +76,21 @@ public class CursomcApplication implements CommandLineRunner{
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2,c3));
 		
+		estadoRepository.saveAll(Arrays.asList(est1,est2));
+		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "70754568490", TipoCliente.PESSOAFISICA);
+		
+		cli1.getTelefones().addAll(Arrays.asList("84991557032","84991044155"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 301", "Jardim", "59076400", cli1, c1);
+		
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
 		
 		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
-//		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "70754568490", TipoCliente.PESSOAFISICA);
-//		
-//		cli1.getTelefones().addAll(Arrays.asList("84991557032","84991044155"));
-//		
-//		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 301", "Jardim", "59076400", cli1,  )
 		
 	}
 
