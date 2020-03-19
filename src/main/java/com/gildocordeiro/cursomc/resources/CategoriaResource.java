@@ -19,19 +19,26 @@ import com.gildocordeiro.cursomc.services.CategoriaService;
 public class CategoriaResource {
 	
 	@Autowired
-	private CategoriaService servico;
+	private CategoriaService service;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id){
-		Categoria categoria = servico.buscar(id);	
+	public ResponseEntity<Categoria> find(@PathVariable Integer id){
+		Categoria categoria = service.find(id);	
 		return ResponseEntity.ok().body(categoria);
 	}	
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> save(@RequestBody Categoria obj){
-		obj = servico.save(obj);
+		obj = service.save(obj);
 		//Objeto que ira receber a nova URI gerada a patir da inserção da nova categoria
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+		obj.setId(id);
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 }
