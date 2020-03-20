@@ -13,7 +13,7 @@ import com.gildocordeiro.cursomc.services.exception.ObjectNotFoundException;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 	
-	
+	//Exception for research products that not exists in database 
 	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> obejectNotFound(ObjectNotFoundException e, HttpServletRequest request){
 		
@@ -21,6 +21,7 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
 	
+	//Exception for bad request in delete category with products 
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError> dataIntegrityException(DataIntegrityException e, HttpServletRequest request){
 		

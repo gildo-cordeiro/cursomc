@@ -1,6 +1,8 @@
 package com.gildocordeiro.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.gildocordeiro.cursomc.domain.Categoria;
+import com.gildocordeiro.cursomc.dto.CategoriaDTO;
 import com.gildocordeiro.cursomc.services.CategoriaService;
 
 @RestController
@@ -46,5 +49,16 @@ public class CategoriaResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();	
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll(){
+		List<Categoria> categoria = service.findAll();
+		//Stream foi adcionado no Java 8 para trabalhar em conjunto com filter, map, sum etc. Ele facilita a vida de desenvolvedores 
+		//no momento  de mexer com listas.<Estudar mais sobre isso depois>
+		
+		//Essa função foi criada para retornar apenas os nomes das categorias com seus respectivos id's (mapeados pela CategoriaDTO)
+		List<CategoriaDTO> listDTO = (List<CategoriaDTO>) categoria.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
 }
