@@ -80,6 +80,8 @@ public class CategoriaResource {
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC")String direction){
 		Page<Categoria> categorias = service.findPage(page, linePerPage, orderBy, direction);
+		
+		//Por o Page ser um objeto do Java 8 não é necessario utilizar o stream e o collect;
 		Page<CategoriaDTO> listDTO = categorias.map(obj -> new CategoriaDTO(obj));
 		
 		return ResponseEntity.ok().body(listDTO);
