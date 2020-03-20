@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -58,7 +60,29 @@ public class CategoriaResource {
 		//no momento  de mexer com listas.<Estudar mais sobre isso depois>
 		
 		//Essa função foi criada para retornar apenas os nomes das categorias com seus respectivos id's (mapeados pela CategoriaDTO)
-		List<CategoriaDTO> listDTO = (List<CategoriaDTO>) categoria.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		List<CategoriaDTO> listDTO = (List<CategoriaDTO>) categoria.stream().map(
+				obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	/**
+	 * 
+	 * @param page
+	 * @param linePerPage
+	 * @param orderBy
+	 * @param direction
+	 * @return
+	 */
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	public ResponseEntity<Page<CategoriaDTO>> findAllByPage(
+			@RequestParam(value = "page", defaultValue = "0") Integer page, 
+			@RequestParam(value = "linePerPage", defaultValue = "24") Integer linePerPage, 
+			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, 
+			@RequestParam(value = "direction", defaultValue = "ASC")String direction){
+		Page<Categoria> categorias = service.findPage(page, linePerPage, orderBy, direction);
+		Page<CategoriaDTO> listDTO = categorias.map(obj -> new CategoriaDTO(obj));
+		
+		return ResponseEntity.ok().body(listDTO);
+		
 	}
 }
